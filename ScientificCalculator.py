@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+  # -*- coding: utf-8 -*-
 from Tkinter import * #gives us access to everything in the Tkinter class
 import tkMessageBox
 import parser
@@ -8,89 +8,12 @@ from math import *
 display=""
 firstNum =""
 dec=0
+op = False
 
 
 
-class Calc():
-    def __init__(self):
-        self.total = 0
-        self.current = ""
-        self.new_num = True
-        self.op_pending = False
-        self.op = ""
-        self.eq = False
 
-
-    def num_press(self, num):
-        self.eq = False
-        temp = text_box.get()
-        temp2 = str(num)      
-        if self.new_num:
-            self.current = temp2
-            self.new_num = False
-        else:
-            if temp2 == '.':
-                if temp2 in temp:
-                    return
-            self.current = temp + temp2
-        self.display(self.current)
-
-    def calc_total(self):
-        self.eq = True
-        self.current = float(self.current)
-        if self.op_pending == True:
-            self.do_sum()
-        else:
-            self.total = float(text_box.get())
-
-    def display(self, value):
-        text_box.delete(0, END)
-        text_box.insert(0, value)
-
-    def do_sum(self):                         # add, minus, multiple, divide
-        if self.op == "add":
-            self.total += self.current
-        if self.op == "minus":
-            self.total -= self.current
-        if self.op == "times":
-            self.total *= self.current
-        if self.op == "divide":
-            self.total /= self.current
-        self.new_num = True
-        self.op_pending = False
-        self.display(self.total)
-
-    def operation(self, op): 
-        self.current = float(self.current)
-        if self.op_pending:
-            self.do_sum()
-        elif not self.eq:
-            self.total = self.current
-        self.new_num = True
-        self.op_pending = True
-        self.op = op
-        self.eq = False
-
-    def cancel(self):
-        self.eq = False
-        self.current = "0"
-        self.display(0)
-        self.new_num = True
-
-    def all_cancel(self):
-        self.cancel()
-        self.total = 0
-
-    def sign(self):
-        self.eq = False
-        self.current = -(float(text_box.get()))
-        self.display(self.current)
-
-                                                                                    #sum1 = Calc()
-                                                                                    #root = Tk()
-                                                                                    #calc = Frame(root)
-                                                                                    #calc.grid()
-
+                                                                                    #answer , saving only the answer, after answer , more than one #
 
 
 def clear_all():
@@ -102,26 +25,32 @@ def buttonpress1():
     entrytxt = entry1.get()
     print entrytxt
     tkMessageBox.showinfo("Here's what you typed", entrytxt)
-def clearList(event):
+def clearList():
     listbox1.delete(0, END)    
 def openfileR():
     clearList2()
+    global display
     f=open("ReadMe.txt", 'r')
+    display=f.readline()
+    label1.config(text=display)
     for line in f:
         answer=line[0:-1]
         listbox1.insert(END, answer)  
 def openfileW():
     f = open("ReadMe.txt", 'w')
+    global display
+    f.write(display+"\n") 
     answer = listbox1.get(0, END)
     for i in answer:
         f.write(i+"\n")        
     f.close()    
 def clearList2():
     listbox1.delete(0, END)
-
-
-
-
+def cLear():
+    listbox1.delete(0, END)  
+    label1.config(text="")
+    global display
+    display=""
 
 
 #types number
@@ -132,13 +61,15 @@ def buttonPress0():
     label1.config(text=display) 
     global firstNum
     firstNum += "0"
+    #listbox1.insert(END, "0") 
 def buttonPress1():
     label1.config(text="1")
     global display
     display += "1"
     label1.config(text=display)
     global firstNum
-    firstNum += "1" 
+    firstNum += "1"
+    #listbox1.insert(END, "1")  
 def buttonPress2():
     label1.config(text="2")
     global display
@@ -146,6 +77,7 @@ def buttonPress2():
     label1.config(text=display)
     global firstNum
     firstNum += "2" 
+    #listbox1.insert(END, "2") 
 def buttonPress3():
     label1.config(text="3")
     global display
@@ -153,6 +85,7 @@ def buttonPress3():
     label1.config(text=display)
     global firstNum
     firstNum += "3" 
+    #listbox1.insert(END, "3") 
 def buttonPress4():
     label1.config(text="4")
     global display
@@ -160,6 +93,7 @@ def buttonPress4():
     label1.config(text=display) 
     global firstNum
     firstNum += "4"
+    #listbox1.insert(END, "4")    
 def buttonPress5():
     label1.config(text="5")
     global display
@@ -167,6 +101,7 @@ def buttonPress5():
     label1.config(text=display)
     global firstNum
     firstNum += "5" 
+    #listbox1.insert(END, "5") 
 def buttonPress6():
     label1.config(text="6")
     global display
@@ -174,6 +109,7 @@ def buttonPress6():
     label1.config(text=display) 
     global firstNum
     firstNum += "6"
+    #listbox1.insert(END, "6") 
 def buttonPress7():
     label1.config(text="7")
     global display
@@ -181,76 +117,100 @@ def buttonPress7():
     label1.config(text=display) 
     global firstNum
     firstNum += "7"
+    #listbox1.insert(END, "7") 
 def buttonPress8():
     label1.config(text="8")
     global display
     display += "8"
-    label1.config(text=display)
+    label1.config(text=display) 
     global firstNum
-    firstNum += "8" 
+    firstNum += "8"
+    #listbox1.insert(END, "8")  
 def buttonPress9():
     global display
     display += "9"
     label1.config(text=display)
     global firstNum
     firstNum += "9"
+    #listbox1.insert(END, "9") 
 def buttonPress060():
-    label1.config(text=".")
-    global dec
     global display
-    if dec == 0:
-        display += "."
-        label1.config(text=display) 
-        global firstNum
-        firstNum += "."
-        dec = 1
-    
-
-    
-       
-def buttonPress00():
-    label1.config(text="+")
-    global display
-    listbox1.insert(END, display)                     
-    listbox1.insert(END, "+") 
-    display += "+"
+    display += "."
     label1.config(text=display)
-    
-    
-    
-    
-    
+    global firstNum
+    firstNum += "."
+        
 def buttonPress061():
     label1.config(text="=")
     global display
-    display += "="
-    label1.config(text=display) 
-    listbox1.insert(END, display)      
-      
-         
+    global firstNum              
+    listbox1.insert(END ,firstNum)
+    firstNum=""
+    listbox1.size()      
+    if listbox1.size() == 3:
+        num1 = float(listbox1.get(0))
+        op2 = listbox1.get(1)
+        num2 = float(listbox1.get(2))
+        finalop = 0
+        if op2 == "+":
+            finalop = num1 + num2
+        elif op2 == "-":
+            finalop = num1 - num2
+        elif op2 == "/":
+            finalop = num1 / num2
+        elif  op2 == "*":
+            finalop = num1 * num2 
+        display =   str(finalop)
+        label1.config(text=display) 
+        clearList()
+        listbox1.insert(END, finalop)
+            
+def buttonPress00():
+    label1.config(text="+")
+    global display 
+    global firstNum              
+    if len(firstNum) != 0:
+        listbox1.insert(END ,firstNum)
+    listbox1.insert(END, "+") 
+    display += "+"
+    label1.config(text=display)
+    firstNum=""
+           
 def buttonPress000():
     label1.config(text="-")
     global display
+    global firstNum              
+    if len(firstNum) != 0:
+        listbox1.insert(END ,firstNum)
+    listbox1.insert(END, "-") 
     display += "-"
     label1.config(text=display) 
-    listbox1.insert(END, display)  
+    
 def buttonPress0000():
-    label1.config(text="x")
+    label1.config(text="*")
     global display
-    display += "x"
+    global firstNum              
+    if len(firstNum) != 0:
+        listbox1.insert(END ,firstNum)
+    listbox1.insert(END, "*") 
+    display += "*"
     label1.config(text=display) 
-    listbox1.insert(END, display) 
+    
 def buttonPress062():
     label1.config(text="/")
     global display
+    global firstNum              
+    if len(firstNum) != 0:
+        listbox1.insert(END ,firstNum)
+    listbox1.insert(END, "/") 
     display += "/"
     label1.config(text=display) 
-    listbox1.insert(END, display)                     
+                 
 
 
 
 #design
-root = Tk() #gives us a blank canvas object to work with
+root = Tk() #gives us a blank canvas object to work with                            #listbox can only have 3 lines
 root.title("Scientific Calculator")
 
 label1 = Label(root, bg="lavender", anchor=W)
@@ -338,8 +298,11 @@ filemenu.add_command(label="Open", command=openfileR)
 filemenu.add_separator()
 filemenu.add_command(label="Save", command=openfileW)
 
+
 menubar.add_cascade(label="File", menu=filemenu)
-menubar.add_cascade(label="Clear", command=clear_all)
+menubar.add_cascade(label="Clear All", command=cLear)
+
+
 
 root.config(menu=menubar)
 
